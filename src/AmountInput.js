@@ -11,6 +11,7 @@ export default class AmountInput extends React.Component {
   amountChange() {
     const amount = document.getElementById('amount').value;
     if (amount === '1000000') {
+      // happy easter
       $('#one-million-dollars').modal();
     }
   }
@@ -18,8 +19,16 @@ export default class AmountInput extends React.Component {
   buttonClick(e) {
     let amountFloat = parseFloat(document.getElementById('amount').value);
     const button = e.currentTarget.value;
-    console.log(amountFloat);
-    console.log(button);
+    if (amountFloat > 0 && button === 'Add') {
+      this.props.addLine({ amount: amountFloat, type: 'Credit' });
+    } else {
+      // if the user clicked Remove or Add with a negative amount
+      if (amountFloat < 0) {
+        // all amounts are positive when recorded to flip the sign if needed
+        amountFloat = amountFloat * -1;
+      }
+      this.props.addLine({ amount: amountFloat, type: 'Debit' });
+    }
   }
 
   render() {
@@ -51,4 +60,4 @@ export default class AmountInput extends React.Component {
     );
   }
 }
-AmountInput.propTypes = { currencySymbol: React.PropTypes.string.isRequired };
+AmountInput.propTypes = { currencySymbol: React.PropTypes.string.isRequired, addLine: React.PropTypes.func.isRequired };

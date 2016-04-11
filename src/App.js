@@ -9,11 +9,16 @@ export default class App extends React.Component {
 
     this.state = { grandTotal: 0, amountList: amounts };
     this.resetClick = this.resetClick.bind(this);
+    this.addLine = this.addLine.bind(this);
   }
 
   resetClick() {
     document.getElementById('amount').value = '';
     this.setState({ grandTotal: 0, amountList: [] });
+  }
+
+  addLine(line) {
+    console.log(line);
   }
 
   render() {
@@ -23,7 +28,7 @@ export default class App extends React.Component {
         <div className="container">
           <h3>Total</h3>
           <h4>{this.props.currencySymbol}{this.state.grandTotal.toFixed(2)}</h4>
-          <AmountInput currencySymbol={this.props.currencySymbol} />
+          <AmountInput currencySymbol={this.props.currencySymbol} addLine={this.addLine} />
           {this.state.amountList.length > 0 &&
             <BalanceSheet currencySymbol={this.props.currencySymbol} amounts={this.state.amountList} />
           }
