@@ -18,7 +18,27 @@ export default class App extends React.Component {
   }
 
   addLine(line) {
-    console.log(line);
+    // check if the new total will be > 0 first
+    let total = 0;
+    if (line.type === 'Credit') {
+      total = this.state.grandTotal + line.amount;
+    } else if (line.type === 'Debit') {
+      total = this.state.grandTotal - line.amount;
+    }
+    if (total >= 0) {
+      // clone the amountList so we don't mutate state
+      const amounts = Array.from(this.state.amountList);
+
+      // add a unique key (the index) so we can render the lines as React children
+      // as well as the Date and new total
+      const newLine = Object.assign({}, line);
+      newLine.key = amounts.length;
+      newLine.date = new Date().toDateString();
+      newLine.balance = total;
+
+      amounts.push(newLine);
+      this.setState({ grandTotal: total, amountList: amounts });
+    }
   }
 
   render() {
