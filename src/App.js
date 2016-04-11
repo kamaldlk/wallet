@@ -1,16 +1,20 @@
 import React from 'react';
+import Navbar from './Navbar';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.resetClick = this.resetClick.bind(this);
+  }
+
+  resetClick() {
+    console.log('reset');
   }
 
   render() {
     return (
-      <h1>
-        Hello World
-      </h1>
+      <Navbar onReset={this.resetClick} />
     );
   }
 }
