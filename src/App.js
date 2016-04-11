@@ -5,16 +5,25 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = { grandTotal: 0 };
     this.resetClick = this.resetClick.bind(this);
   }
 
   resetClick() {
-    console.log('reset');
+    this.setState({ grandTotal: 0 });
   }
 
   render() {
     return (
-      <Navbar onReset={this.resetClick} />
+      <div>
+        <Navbar onReset={this.resetClick} />
+        <div className="container">
+          <h3>Total</h3>
+          <h4>{this.props.currencySymbol}{this.state.grandTotal.toFixed(2)}</h4>
+        </div>
+      </div>
     );
   }
 }
+App.propTypes = { currencySymbol: React.PropTypes.string.isRequired };
+App.defaultProps = { currencySymbol: '$' };
