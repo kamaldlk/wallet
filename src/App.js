@@ -7,12 +7,28 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { grandTotal: 0, amountList: amounts };
+    // parse the wallet data from localStorage if it exists
+    const data = localStorage.getItem('wallet');
+    const amounts = data !== null ? JSON.parse(data) : [];
+
+    // if we do have data, re-calculate the grand total
+    let total = 0;
+    amounts.forEach(line => {
+      if (line.type === 'Credit') {
+        total += line.amount;
+      } else if (line.type === 'Debit') {
+        total -= line.amount;
+      }
+    });
+
+    this.state = { grandTotal: total, amountList: amounts };
     this.resetClick = this.resetClick.bind(this);
     this.addLine = this.addLine.bind(this);
   }
 
   resetClick() {
+    // destroy the localStorage data and setState
+    localStorage.removeItem('wallet');
     document.getElementById('amount').value = '';
     this.setState({ grandTotal: 0, amountList: [] });
   }
@@ -36,7 +52,9 @@ export default class App extends React.Component {
       newLine.date = new Date().toDateString();
       newLine.balance = total;
 
+      // overwrite our localStorage with the new amounts version and setState
       amounts.push(newLine);
+      localStorage.setItem('wallet', JSON.stringify(amounts));
       this.setState({ grandTotal: total, amountList: amounts });
     }
   }
