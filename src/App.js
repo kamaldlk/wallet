@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
+import AmountInput from './AmountInput';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export default class App extends React.Component {
         <div className="container">
           <h3>Total</h3>
           <h4>{this.props.currencySymbol}{this.state.grandTotal.toFixed(2)}</h4>
+          <AmountInput currencySymbol={this.props.currencySymbol} />
         </div>
       </div>
     );
